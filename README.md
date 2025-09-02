@@ -6,7 +6,7 @@
 
 ### 🌐 **온라인 데모**
 - **[Hugging Face Spaces](https://huggingface.co/spaces/LEEYH205/peft-hands-on)** 🚀
-- **[Streamlit Cloud](https://peft-hands-on.streamlit.app)** ☁️
+- **[Streamlit Cloud](https://peft-hands-on-lyh205.streamlit.app)** ☁️
 
 ### 💻 **로컬 실행**
 ```bash
@@ -299,4 +299,4 @@ safety check
 **⭐ 이 프로젝트가 도움이 되었다면 GitHub에 스타를 눌러주세요!**
 
 **🚀 [Hugging Face Spaces](https://huggingface.co/spaces/LEEYH205/peft-hands-on)에서 바로 체험해보세요!**
-**☁️ [Streamlit Cloud](https://peft-hands-on.streamlit.app)에서도 사용할 수 있습니다!**
+**☁️ [Streamlit Cloud](https://peft-hands-on-lyh205.streamlit.app)에서도 사용할 수 있습니다!**

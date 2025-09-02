@@ -11,6 +11,7 @@ LoRA, QLoRA, IA³, Prefix Tuning, Prompt Tuning 등 다양한 PEFT 방법을 실
 """
 
 import os
+
 import streamlit as st
 
 from peft_utils.data import load_tiny_instruct
@@ -25,10 +26,10 @@ setup_korean_font()
 
 # 페이지 설정
 st.set_page_config(
-    page_title="PEFT Hands-on", 
-    page_icon="🧩", 
+    page_title="PEFT Hands-on",
+    page_icon="🧩",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
 )
 
 # 배포 환경 표시
@@ -43,13 +44,15 @@ st.title("🧩 PEFT Hands-on (LoRA / QLoRA / IA³ / Prefix / Prompt)")
 
 # 배포 환경별 설명
 if IS_HF_SPACES or IS_STREAMLIT_CLOUD:
-    st.info("""
+    st.info(
+        """
     🌟 **클라우드 배포 완료!**
-    
+
     이제 인터넷이 연결된 어디서든 PEFT를 학습할 수 있습니다.
     - **Hugging Face Spaces**: AI 커뮤니티와 공유
     - **Streamlit Cloud**: 안정적인 클라우드 서비스
-    """)
+    """
+    )
 
 st.markdown(
     """
@@ -63,24 +66,37 @@ try:
     train_ds, eval_ds = load_tiny_instruct()
     st.subheader("📦 샘플 데이터 (tiny_instruct)")
     st.dataframe(train_ds.to_pandas().head(3))
-    st.info("좌측 사이드바의 페이지를 눌러 각 기법(LoRA, QLoRA, IA³, Prefix/Prompt)을 실습하세요.")
+    st.info(
+        "좌측 사이드바의 페이지를 눌러 각 기법(LoRA, QLoRA, IA³, Prefix/Prompt)을 실습하세요."
+    )
 except Exception as e:
     st.warning(f"⚠️ 데이터 로드 중 오류가 발생했습니다: {str(e)}")
-    st.info("""
+    st.info(
+        """
     💡 **해결 방법**:
     1. 페이지를 새로고침해보세요
     2. 잠시 후 다시 시도해보세요
     3. 문제가 지속되면 GitHub 이슈를 등록해주세요
-    """)
+    """
+    )
 
 # 배포 정보 표시
 with st.sidebar:
     st.markdown("---")
     st.markdown("### 📚 **프로젝트 정보**")
-    st.markdown("**GitHub**: [peft_streamlit](https://github.com/LEEYH205/peft_streamlit)")
-    
+    st.markdown(
+        "**GitHub**: [peft_streamlit](https://github.com/LEEYH205/peft_streamlit)"
+    )
+
     if IS_HF_SPACES:
-        st.markdown("**Hugging Face**: [PEFT Hands-on](https://huggingface.co/spaces/LEEYH205/peft-hands-on)")
-    
+        st.markdown(
+            "**Hugging Face**: [PEFT Hands-on](https://huggingface.co/spaces/LEEYH205/peft-hands-on)"
+        )
+
+    if IS_STREAMLIT_CLOUD:
+        st.markdown(
+            "**Streamlit Cloud**: [PEFT-Hands-on-lyh205](https://peft-hands-on-lyh205.streamlit.app)"
+        )
+
     st.markdown("**버전**: 1.0.0")
     st.markdown("**라이선스**: MIT")

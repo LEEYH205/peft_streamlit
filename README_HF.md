@@ -42,7 +42,7 @@ license: mit
 ## 🔗 **링크**
 
 - **GitHub**: [LEEYH205/peft_streamlit](https://github.com/LEEYH205/peft_streamlit)
-- **Streamlit Cloud**: [peft-hands-on](https://peft-hands-on.streamlit.app)
+- **Streamlit Cloud**: [PEFT-Hands-on-lyh205](https://peft-hands-on-lyh205.streamlit.app)
 
 ---
 

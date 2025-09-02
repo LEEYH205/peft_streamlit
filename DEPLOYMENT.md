@@ -110,7 +110,7 @@ license: mit
 Repository: LEEYH205/peft_streamlit
 Branch: main
 Main file path: app.py
-App URL: peft-hands-on (선택사항)
+App URL: peft-hands-on-lyh205 (선택사항)
 ```
 
 #### **단계 3: 배포 실행**
@@ -284,7 +284,7 @@ git push
 ## 🚀 **즉시 체험하기**
 
 - **[Hugging Face Spaces](https://huggingface.co/spaces/[계정명]/peft-hands-on)** 🚀
-- **[Streamlit Cloud](https://[앱명].streamlit.app)** ☁️
+- **[Streamlit Cloud](https://peft-hands-on-lyh205.streamlit.app)** ☁️
 ```
 
 #### **커뮤니티 공유**
