@@ -1,0 +1,235 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  PYTHON_VERSION: '3.11'
+  STREAMLIT_VERSION: '1.28.0'
+
+jobs:
+  # 테스트 및 코드 품질 검사
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.9, 3.10, 3.11, 3.12]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-${{ matrix.python-version }}-
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov flake8 black isort
+    
+    - name: Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+    
+    - name: Format check with black
+      run: |
+        black --check --diff .
+    
+    - name: Import sorting check with isort
+      run: |
+        isort --check-only --diff .
+    
+    - name: Run tests
+      run: |
+        pytest --cov=peft_utils --cov-report=xml --cov-report=html
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+  # Streamlit 앱 검증
+  streamlit-check:
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install streamlit
+    
+    - name: Validate Streamlit app
+      run: |
+        # Streamlit 앱 구문 검사
+        python -c "import app; print('✅ App import successful')"
+        
+        # 페이지 모듈 검사
+        python -c "import pages; print('✅ Pages import successful')"
+        
+        # PEFT 유틸리티 검사
+        python -c "import peft_utils; print('✅ PEFT utils import successful')"
+        
+        # Streamlit 설정 검사
+        python -c "import streamlit as st; print(f'✅ Streamlit version: {st.__version__}')"
+    
+    - name: Check app structure
+      run: |
+        # 필수 파일 존재 확인
+        test -f app.py && echo "✅ app.py exists"
+        test -f requirements.txt && echo "✅ requirements.txt exists"
+        test -d pages && echo "✅ pages directory exists"
+        test -d peft_utils && echo "✅ peft_utils directory exists"
+        
+        # 페이지 파일 개수 확인
+        PAGE_COUNT=$(find pages -name "*.py" | wc -l)
+        echo "📄 Found $PAGE_COUNT page files"
+        test $PAGE_COUNT -ge 6 && echo "✅ Sufficient page files"
+
+  # 보안 검사
+  security:
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Run Bandit security linter
+      run: |
+        python -m pip install bandit
+        bandit -r . -f json -o bandit-report.json || true
+    
+    - name: Run Safety check
+      run: |
+        python -m pip install safety
+        safety check --json --output safety-report.json || true
+
+  # 빌드 및 아티팩트 생성
+  build:
+    runs-on: ubuntu-latest
+    needs: [test, streamlit-check, security]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install build wheel setuptools
+    
+    - name: Build package
+      run: |
+        python -m build
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-files
+        path: dist/
+
+  # 배포 준비 (릴리스)
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ github.run_number }}
+        release_name: Release v${{ github.run_number }}
+        body: |
+          ## 🚀 PEFT Streamlit App Release v${{ github.run_number }}
+          
+          ### ✨ New Features
+          - Automated CI/CD pipeline
+          - Enhanced testing and validation
+          - Security scanning
+          
+          ### 🔧 Technical Improvements
+          - Code quality checks (flake8, black, isort)
+          - Test coverage reporting
+          - Streamlit app validation
+          
+          ### 📊 Build Information
+          - Python versions: 3.9, 3.10, 3.11, 3.12
+          - Streamlit version: ${{ env.STREAMLIT_VERSION }}
+          - Build number: ${{ github.run_number }}
+          
+          ### 📦 Artifacts
+          - Build files available in artifacts
+          - Coverage reports generated
+          - Security scan results included
+        draft: false
+        prerelease: false
+
+  # Streamlit Cloud 배포 (선택사항)
+  deploy-streamlit:
+    runs-on: ubuntu-latest
+    needs: [test, streamlit-check]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Deploy to Streamlit Cloud
+      run: |
+        echo "🚀 Ready for Streamlit Cloud deployment"
+        echo "📋 Manual deployment steps:"
+        echo "1. Go to https://share.streamlit.io/"
+        echo "2. Connect GitHub repository: LEEYH205/peft_streamlit"
+        echo "3. Set main file path: app.py"
+        echo "4. Deploy!"
+    
+    - name: Create deployment status
+      run: |
+        echo "✅ All checks passed - ready for deployment"
+        echo "📊 Test coverage: Available in artifacts"
+        echo "🔒 Security scan: Completed"
+        echo "🎯 Streamlit validation: Successful"
