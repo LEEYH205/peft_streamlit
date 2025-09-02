@@ -20,7 +20,9 @@ st.title("📌 Prefix & Prompt Tuning — 가상 토큰 학습")
 with st.sidebar:
     st.header("⚙️ 설정")
     model_id = st.text_input("Base model", value=DEFAULT_MODEL_ID, help="기본 모델 ID")
-    num_virtual_tokens = st.slider("가상 토큰 수", 1, 100, 16, step=1, help="추가할 가상 토큰의 개수")
+    num_virtual_tokens = st.slider(
+        "가상 토큰 수", 1, 100, 16, step=1, help="추가할 가상 토큰의 개수"
+    )
     epochs = st.number_input("epochs", 1, 10, 1, help="학습 에포크 수")
     lr = st.number_input(
         "learning_rate", 1e-6, 5e-3, 5e-4, step=1e-6, format="%.6f", help="학습률"

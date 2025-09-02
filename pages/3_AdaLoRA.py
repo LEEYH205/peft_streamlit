@@ -14,7 +14,9 @@ try:
     ADALORA_SUPPORTED = True
 except ImportError:
     ADALORA_SUPPORTED = False
-    st.warning("⚠️ 현재 PEFT 버전에서 AdaLoraConfig를 지원하지 않습니다. LoRA로 AdaLoRA 효과를 시뮬레이션합니다.")
+    st.warning(
+        "⚠️ 현재 PEFT 버전에서 AdaLoraConfig를 지원하지 않습니다. LoRA로 AdaLoRA 효과를 시뮬레이션합니다."
+    )
 
 # 한글 폰트 설정
 setup_korean_font()
@@ -27,7 +29,9 @@ st.title("🧠 AdaLoRA — 적응형 LoRA (Adaptive Low-Rank Adaptation)")
 if ADALORA_SUPPORTED:
     st.success("✅ **AdaLoRA 지원됨**: 현재 PEFT 버전에서 AdaLoRA를 완전히 지원합니다!")
 else:
-    st.info("ℹ️ **AdaLoRA 시뮬레이션**: 현재 PEFT 버전에서 AdaLoRA를 LoRA로 시뮬레이션합니다.")
+    st.info(
+        "ℹ️ **AdaLoRA 시뮬레이션**: 현재 PEFT 버전에서 AdaLoRA를 LoRA로 시뮬레이션합니다."
+    )
 
 # 사이드바 설정
 with st.sidebar:
@@ -76,9 +80,15 @@ with col2:
     layer2_rank = 4 + 1.5 * np.sin(epochs_range * 0.3)  # 레이어 2의 rank 변화
     layer3_rank = 6 + 3 * np.sin(epochs_range * 0.7)  # 레이어 3의 rank 변화
 
-    ax.plot(epochs_range, layer1_rank, "b-", linewidth=2, label="레이어 1 (중요도: 높음)")
-    ax.plot(epochs_range, layer2_rank, "g-", linewidth=2, label="레이어 2 (중요도: 보통)")
-    ax.plot(epochs_range, layer3_rank, "r-", linewidth=2, label="레이어 3 (중요도: 낮음)")
+    ax.plot(
+        epochs_range, layer1_rank, "b-", linewidth=2, label="레이어 1 (중요도: 높음)"
+    )
+    ax.plot(
+        epochs_range, layer2_rank, "g-", linewidth=2, label="레이어 2 (중요도: 보통)"
+    )
+    ax.plot(
+        epochs_range, layer3_rank, "r-", linewidth=2, label="레이어 3 (중요도: 낮음)"
+    )
 
     ax.set_xlabel("학습 에포크")
     ax.set_ylabel("LoRA Rank")
@@ -187,11 +197,7 @@ with col2:
         (
             "red"
             if score > 0.8
-            else "orange"
-            if score > 0.6
-            else "yellow"
-            if score > 0.4
-            else "lightblue"
+            else "orange" if score > 0.6 else "yellow" if score > 0.4 else "lightblue"
         )
         for score in importance_scores
     ]
@@ -261,7 +267,9 @@ if st.button("🚀 AdaLoRA 데모 학습 실행", type="primary"):
         train_ds, eval_ds = load_tiny_instruct()
 
         # AdaLoRA 설정 (실제로는 AdaLoRAConfig가 필요하지만 여기서는 LoRA로 시뮬레이션)
-        st.info("⚠️ 현재 AdaLoRA는 LoRA로 시뮬레이션됩니다. 실제 AdaLoRA 구현을 위해서는 추가 설정이 필요합니다.")
+        st.info(
+            "⚠️ 현재 AdaLoRA는 LoRA로 시뮬레이션됩니다. 실제 AdaLoRA 구현을 위해서는 추가 설정이 필요합니다."
+        )
 
         tm = [s.strip() for s in target_modules.split(",") if s.strip()]
 
@@ -325,9 +333,15 @@ if st.button("🚀 AdaLoRA 데모 학습 실행", type="primary"):
             layer2_rank = r + 1.5 * np.sin(steps * 1.5) + np.random.normal(0, 0.3, 50)
             layer3_rank = r + 3 * np.sin(steps * 2.5) + np.random.normal(0, 0.3, 50)
 
-            ax.plot(steps, layer1_rank, "b-", linewidth=2, label=f"Layer 1 (초기 r={r})")
-            ax.plot(steps, layer2_rank, "g-", linewidth=2, label=f"Layer 2 (초기 r={r})")
-            ax.plot(steps, layer3_rank, "r-", linewidth=2, label=f"Layer 3 (초기 r={r})")
+            ax.plot(
+                steps, layer1_rank, "b-", linewidth=2, label=f"Layer 1 (초기 r={r})"
+            )
+            ax.plot(
+                steps, layer2_rank, "g-", linewidth=2, label=f"Layer 2 (초기 r={r})"
+            )
+            ax.plot(
+                steps, layer3_rank, "r-", linewidth=2, label=f"Layer 3 (초기 r={r})"
+            )
 
             ax.set_xlabel("학습 에포크")
             ax.set_ylabel("LoRA Rank")

@@ -277,7 +277,9 @@ with col1:
     methods = ["Full Fine-tuning", "LoRA (r=8)", "LoRA (r=16)", "IA³"]
     param_counts = [100, 0.8, 1.6, 0.04]
 
-    fig = create_comparison_chart(methods, param_counts, "파라미터 효율성 비교", "학습 파라미터 (%)")
+    fig = create_comparison_chart(
+        methods, param_counts, "파라미터 효율성 비교", "학습 파라미터 (%)"
+    )
     st.pyplot(fig)
 
 with col2:

@@ -3,6 +3,7 @@ import os
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import streamlit as st
 
 from peft_utils.data import load_tiny_instruct
@@ -13,7 +14,9 @@ from peft_utils.viz import create_comparison_chart, setup_korean_font
 # 한글 폰트 설정
 setup_korean_font()
 
-st.set_page_config(page_title="평가 및 비교 - PEFT 성능 분석", page_icon="📊", layout="wide")
+st.set_page_config(
+    page_title="평가 및 비교 - PEFT 성능 분석", page_icon="📊", layout="wide"
+)
 
 st.title("📊 평가 및 비교 — PEFT 성능 분석")
 
@@ -97,7 +100,7 @@ with col2:
         ax.text(
             0.5,
             bar.get_y() + bar.get_height() / 2,
-            f"Step {i+1}",
+            f"Step {i + 1}",
             ha="center",
             va="center",
             fontweight="bold",
@@ -263,7 +266,9 @@ if st.button("🚀 성능 평가 실행", type="primary"):
 
         except Exception as e:
             st.error(f"평가 중 오류 발생: {str(e)}")
-            st.info("💡 기본 모델 로드에 문제가 있을 수 있습니다. 모델 ID를 확인해보세요.")
+            st.info(
+                "💡 기본 모델 로드에 문제가 있을 수 있습니다. 모델 ID를 확인해보세요."
+            )
 
 # 종합 비교 테이블
 st.markdown("---")
@@ -295,7 +300,6 @@ comparison_data = {
 }
 
 # 데이터프레임으로 변환하여 표시
-import pandas as pd
 
 df = pd.DataFrame(comparison_data)
 st.dataframe(df, use_container_width=True)

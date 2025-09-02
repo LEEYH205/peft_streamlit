@@ -14,7 +14,9 @@ try:
     DORA_SUPPORTED = True
 except ImportError:
     DORA_SUPPORTED = False
-    st.warning("⚠️ 현재 PEFT 버전에서 DoRAConfig를 지원하지 않습니다. LoRA로 DoRA 효과를 시뮬레이션합니다.")
+    st.warning(
+        "⚠️ 현재 PEFT 버전에서 DoRAConfig를 지원하지 않습니다. LoRA로 DoRA 효과를 시뮬레이션합니다."
+    )
 
 # 한글 폰트 설정
 setup_korean_font()
@@ -279,7 +281,9 @@ if st.button("🚀 DoRA 데모 학습 실행", type="primary"):
         train_ds, eval_ds = load_tiny_instruct()
 
         # DoRA 설정 (실제로는 DoRAConfig가 필요하지만 여기서는 LoRA로 시뮬레이션)
-        st.info("⚠️ 현재 DoRA는 LoRA로 시뮬레이션됩니다. 실제 DoRA 구현을 위해서는 추가 설정이 필요합니다.")
+        st.info(
+            "⚠️ 현재 DoRA는 LoRA로 시뮬레이션됩니다. 실제 DoRA 구현을 위해서는 추가 설정이 필요합니다."
+        )
 
         tm = [s.strip() for s in target_modules.split(",") if s.strip()]
 
@@ -289,7 +293,7 @@ if st.button("🚀 DoRA 데모 학습 실행", type="primary"):
 
         for i in range(3):
             status_text.text(
-                f"단계 {i+1}/3: {'모델 준비' if i==0 else '데이터 처리' if i==1 else '학습 시작'}"
+                f"단계 {i + 1}/3: {'모델 준비' if i == 0 else '데이터 처리' if i == 1 else '학습 시작'}"
             )
             progress_bar.progress((i + 1) * 0.33)
             import time

@@ -26,4 +26,6 @@ st.markdown(
 train_ds, eval_ds = load_tiny_instruct()
 st.subheader("📦 샘플 데이터 (tiny_instruct)")
 st.dataframe(train_ds.to_pandas().head(3))
-st.info("좌측 사이드바의 페이지를 눌러 각 기법(LoRA, QLoRA, IA³, Prefix/Prompt)을 실습하세요.")
+st.info(
+    "좌측 사이드바의 페이지를 눌러 각 기법(LoRA, QLoRA, IA³, Prefix/Prompt)을 실습하세요."
+)

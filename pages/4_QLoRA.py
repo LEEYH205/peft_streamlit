@@ -10,7 +10,9 @@ from peft_utils.viz import create_comparison_chart, setup_korean_font
 # 한글 폰트 설정
 setup_korean_font()
 
-st.set_page_config(page_title="QLoRA - 4-bit 양자화 + LoRA", page_icon="🧱", layout="wide")
+st.set_page_config(
+    page_title="QLoRA - 4-bit 양자화 + LoRA", page_icon="🧱", layout="wide"
+)
 
 st.title("🧱 QLoRA — 4-bit 양자화 + LoRA (Quantized LoRA)")
 
@@ -300,8 +302,12 @@ if st.button("🚀 QLoRA 데모 학습 실행", type="primary"):
         base, tok, quant_ok = load_base_model(model_id, four_bit=True)
 
         if not quant_ok:
-            st.warning("⚠️ 이 환경에서는 4-bit 양자화를 사용할 수 없어 일반 LoRA로 폴백합니다.")
-            st.info("💡 Mac 환경에서는 4-bit 양자화가 지원되지 않습니다. 대신 일반 LoRA를 사용합니다.")
+            st.warning(
+                "⚠️ 이 환경에서는 4-bit 양자화를 사용할 수 없어 일반 LoRA로 폴백합니다."
+            )
+            st.info(
+                "💡 Mac 환경에서는 4-bit 양자화가 지원되지 않습니다. 대신 일반 LoRA를 사용합니다."
+            )
         else:
             st.success("✅ 4-bit 양자화가 성공적으로 적용되었습니다!")
 

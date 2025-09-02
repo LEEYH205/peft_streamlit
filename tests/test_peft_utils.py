@@ -158,7 +158,9 @@ class TestRequirements:
         """requirements.txt 파일 존재 확인"""
         import os
 
-        assert os.path.exists("requirements.txt"), "requirements.txt 파일이 존재하지 않습니다"
+        assert os.path.exists(
+            "requirements.txt"
+        ), "requirements.txt 파일이 존재하지 않습니다"
 
     def test_requirements_content(self):
         """requirements.txt 내용 검증"""
@@ -167,7 +169,9 @@ class TestRequirements:
             # 필수 패키지들이 포함되어 있는지 확인
             assert "streamlit" in content, "streamlit이 requirements.txt에 없습니다"
             assert "torch" in content, "torch가 requirements.txt에 없습니다"
-            assert "transformers" in content, "transformers가 requirements.txt에 없습니다"
+            assert (
+                "transformers" in content
+            ), "transformers가 requirements.txt에 없습니다"
             assert "peft" in content, "peft가 requirements.txt에 없습니다"
 
 
