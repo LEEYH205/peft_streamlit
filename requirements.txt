@@ -1,9 +1,12 @@
 streamlit>=1.36.0
+torch>=2.0.0
 transformers>=4.43.0
 peft>=0.11.0
 datasets>=2.20.0
 accelerate>=0.33.0
 matplotlib>=3.8.0
+numpy>=1.24.0
+pandas>=2.0.0
 # 선택: GPU에서만 정상 동작 가능. Mac/CPU에서는 자동 폴백.
 bitsandbytes>=0.43.0
 # 일부 모델에 필요
