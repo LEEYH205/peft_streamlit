@@ -1,4 +1,12 @@
+"""
+PEFT Hands-on Streamlit Application
+
+초보자도 쉽게 이해할 수 있는 Parameter-Efficient Fine-Tuning (PEFT) 실습 애플리케이션입니다.
+LoRA, QLoRA, IA³, Prefix Tuning, Prompt Tuning 등 다양한 PEFT 방법을 실습할 수 있습니다.
+"""
+
 import streamlit as st
+
 from peft_utils.data import load_tiny_instruct
 from peft_utils.viz import setup_korean_font
 
@@ -9,7 +17,7 @@ st.set_page_config(page_title="PEFT Hands-on", page_icon="🧩", layout="wide")
 st.title("🧩 PEFT Hands-on (LoRA / QLoRA / IA³ / Prefix / Prompt)")
 
 st.markdown(
-"""
+    """
 초보자도 **PEFT(파라미터 효율적 미세조정)**를 쉽게 이해하고 실습할 수 있도록 만든 대화형 튜토리얼입니다.
 좌측 페이지에서 기법을 선택하고, 기본 하이퍼파라미터로 **빠른 데모 학습**을 실행해보세요.
 """
